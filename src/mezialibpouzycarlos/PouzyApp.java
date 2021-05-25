@@ -82,12 +82,12 @@ public class PouzyApp extends javax.swing.JFrame {
                
                for (i = 1; i <= q; i++)
                {
-                   columnData.add(rs.getShort("bookid"));
-                   columnData.add(rs.getShort("title"));
-                   columnData.add(rs.getShort("author"));
-                   columnData.add(rs.getShort("language"));
-                   columnData.add(rs.getShort("isbn"));
-                   columnData.add(rs.getShort("available"));
+                   columnData.add(rs.getString("idbook"));
+                   columnData.add(rs.getString("title"));
+                   columnData.add(rs.getString("author"));
+                   columnData.add(rs.getString("language"));
+                   columnData.add(rs.getString("ibsn"));
+                   columnData.add(rs.getString("available"));
                }
                RecordTable.addRow(columnData);
                
@@ -132,6 +132,11 @@ public class PouzyApp extends javax.swing.JFrame {
         deleteBookButton.setText("Delete Book");
 
         updateBookButton.setText("UpdateBook");
+        updateBookButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBookButtonActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -151,6 +156,11 @@ public class PouzyApp extends javax.swing.JFrame {
             }
         ));
         jTable1.setColumnSelectionAllowed(true);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -325,6 +335,49 @@ private JFrame frame;
     private void insertAvailableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertAvailableActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_insertAvailableActionPerformed
+
+    private void updateBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBookButtonActionPerformed
+         try
+       {
+           Class.forName("com.mysql.jdbc.Driver");
+           sqlConn = DriverManager.getConnection(dataConn,username,password);
+           pst = sqlConn.prepareStatement("UPDATE books set title=?, author=?, language=?, ibsn=?, available=? WHERE id=?");
+           
+           pst.setString(1, insertTitle.getText());
+           pst.setString(2, insertAuthor.getText());
+           pst.setString(3, insertLanguage.getText());
+           pst.setString(4, insertIBSN.getText());
+           pst.setString(5, insertAvailable.getText());
+           
+           pst.executeUpdate();
+           JOptionPane.showMessageDialog(this, "Record Updated");
+           updateDB();
+           
+           
+       }
+        
+        catch (ClassNotFoundException ex){
+            java.util.logging.Logger.getLogger(PouzyApp.class.getName()).log(java.util.logging.Level.SEVERE,
+                    null, ex);
+        }
+        catch (SQLException ex){
+            java.util.logging.Logger.getLogger(PouzyApp.class.getName()).log(java.util.logging.Level.SEVERE,
+                    null, ex);
+        }
+        
+    }//GEN-LAST:event_updateBookButtonActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        DefaultTableModel RecordTable = (DefaultTableModel)jTable1.getModel();
+         int SelectedRows = jTable1.getSelectedRow();   
+         
+         insertTitle.setText(RecordTable.getValueAt(SelectedRows, 1).toString());
+         insertAuthor.setText(RecordTable.getValueAt(SelectedRows, 2).toString());
+         insertLanguage.setText(RecordTable.getValueAt(SelectedRows, 3).toString());
+         insertIBSN.setText(RecordTable.getValueAt(SelectedRows, 4).toString());
+         insertAvailable.setText(RecordTable.getValueAt(SelectedRows, 5).toString());
+           
+    }//GEN-LAST:event_jTable1MouseClicked
        
     /**
      * @param args the command line arguments
