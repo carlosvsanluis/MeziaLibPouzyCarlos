@@ -2,10 +2,26 @@ package mezialibpouzycarlos;
 
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import java.text.DateFormat;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+
+import java.util.Vector;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -68,6 +84,10 @@ public class PouzyApp extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
